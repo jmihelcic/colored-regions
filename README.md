@@ -1,6 +1,6 @@
 # Colored Regions for Visual Studio Code
 
-This package provides a simple way to colorize regions.
+This package provides a simple way of colorizing regions.
 
 ## Features
 
