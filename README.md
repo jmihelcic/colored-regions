@@ -2,6 +2,18 @@
 
 This package provides a simple way of colorizing regions.
 
+## Installation
+
+Install through VS Code extensions. Search for `Colored Regions`
+
+[Visual Studio Code Market Place: Colored Regions](https://marketplace.visualstudio.com/items?itemName=mihelcic.colored-regions)
+
+Can also be installed using
+
+```
+ext install colored-regions
+```
+
 ## Features
 
 Customize your regions by providing a `rgba(r, g, b, a)` color.

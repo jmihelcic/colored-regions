@@ -24,5 +24,15 @@
         "tslint": "^5.8.0",
         "@types/node": "^7.0.43",
         "@types/mocha": "^2.2.42"
-    }
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/jmihelcic/colored-regions/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jmihelcic/colored-regions.git"
+    },
+    "homepage":
+        "https://github.com/jmihelcic/colored-regions/blob/master/README.md"
 }
