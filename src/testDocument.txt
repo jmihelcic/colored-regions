@@ -1,0 +1,92 @@
+// ==================================================================
+// Don't match the regex
+// ==================================================================
+
+//#region Test
+//#endregion
+
+//#region[] Test
+//#endregion
+
+//#region[string] Test
+//#endregion
+
+//#region[123] Test
+//#endregion
+
+//#region[rgb(128,128,128)] Test
+//#endregion
+
+//#region[rgba(128,128,128)] Test 
+//#endregion
+
+
+// ==================================================================
+// VSCode supported regions
+// ==================================================================
+
+//#region [rgba(26,188,156,0.15)]
+    TypeScript/JavaScript
+//#endregion
+
+//region [rgba(46,204,113,0.15)]
+    TypeScript/JavaScript
+//endregion
+
+#region [rgba(52,152,219,0.15)]
+    C#
+#endregion
+
+#pragma region [rgba(155,89,182,0.15)]
+    C/C++ 
+#pragma endregion
+
+//#region [rgba(52,73,94,0.15)]
+    F#
+//#endregion
+
+#region [rgba(241,196,15,0.15)]
+    Powershell
+#endregion
+
+#Region [rgba(231,76,60,0.15)]
+    VB
+#End Region
+
+
+// ==================================================================
+// Mix and Match regions - Allowed by regex
+// ==================================================================
+
+#pragma region [rgba(46,204,113,0.15)]
+#EndRegion
+
+//#region [rgba(52,152,219,0.15)]
+#endregion
+
+#Region [rgba(155,89,182,0.15)]
+#pragma endregion
+
+// ==================================================================
+// Allowed variations of spaces
+// Underscore marks the allowed spot for a space
+// region_[_rgba(R_,_G_,_B_,_A)_]
+// ==================================================================
+
+//#region[rgba(26,188,156,0.15)] Colored Region
+//#endregion
+
+//#region[rgba(46, 204, 113, 0.15)] Colored Region
+//#endregion
+
+//#region[ rgba(52, 152, 219, 0.15) ] Colored Region
+//#endregion
+
+//#region [ rgba(155, 89, 182, 0.15) ] Colored Region
+//#endregion
+
+//#region [ rgba(52 ,73 ,94 ,0.15) ] Colored Region
+//#endregion
+
+//#region [ rgba(231 , 76 , 60 , 0.15) ] Colored Region
+//#endregion

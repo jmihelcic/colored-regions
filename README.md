@@ -19,7 +19,7 @@ ext install colored-regions
 Customize your regions by providing a `rgba(r, g, b, a)` color.
 
 ```javascript
-//#region[rgba(255, 255, 255, 0.15)] Hello region
+//#region [rgba(255, 255, 255, 0.15)] Hello region
 const hello = () => 'region';
 //#endregion
 ```
@@ -30,11 +30,21 @@ const hello = () => 'region';
 
 ## Roadmap
 
-    1. Settings
-    2. Support for nested regions
+1. Settings
+2. Support for nested regions
 
 ## Release Notes
 
 ### 0.0.1
 
-    MVP release
+* MVP release
+
+### 0.0.2
+
+* Added support for more languages
+
+![supported regions](images/supported_regions.png)
+
+* Added support for space variation in the color definition
+
+![space variation](images/space_variation.png)

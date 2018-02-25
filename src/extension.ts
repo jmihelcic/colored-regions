@@ -17,8 +17,8 @@ interface DecoratorInstances {
 // this method is called when vs code is activated
 export function activate(context: vscode.ExtensionContext) {
     const decoratorInstances: DecoratorInstances = {};
-    // Finds //#region[rgba(255,255,255,0.01)] ... //#endregion (spaces allowed around ",")
-    const regex = /\/\/#region(\[rgba\(\d{1,3}\s?,\s?\d{1,3}\s?,\s?\d{1,3}\s?,\s?\d(?:\.\d{1,2})?\)\])([\s\S]*?)\/\/#endregion/g;
+    // Finds region[rgba(255,255,255,0.01)] ... endregion (spaces allowed around ",")
+    const regex = /[Rr]egion ?(\[ ?rgba\(\d{1,3} ?, ?\d{1,3} ?, ?\d{1,3} ?, ?\d(?:\.\d{1,2})?\) ?\])([\s\S]*?)[Ee]nd ?[Rr]egion/g;
 
     vscode.window.visibleTextEditors.map((editor) => {
         colorRegions(editor);
