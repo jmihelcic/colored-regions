@@ -3,7 +3,7 @@
     "name": "colored-regions",
     "displayName": "Colored Regions",
     "description": "This package provides a simple way of colorizing regions.",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "mihelcic",
     "engines": {
         "vscode": "^1.20.0"
@@ -15,6 +15,25 @@
         "*"
     ],
     "main": "./out/extension",
+    "keywords": [
+        "regions",
+        "color"
+    ],
+    "contributes": {
+        "configuration": {
+            "title": "Colored Regions",
+            "properties": {
+                "coloredRegions.namedColors": {
+                    "type": "object",
+                    "default": {
+                        "MyFavoriteColor": "rgba(79, 44, 115, 0.5)"
+                    },
+                    "description": "You can define and use named colors instead of typing their rgba values",
+                    "scope": "window"
+                }
+            }
+        }
+    },
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",

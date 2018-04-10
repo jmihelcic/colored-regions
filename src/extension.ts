@@ -1,4 +1,9 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
+
+interface NamedColorsMap {
+    [key: string]: string;
+}
 
 interface DecoratorMap {
     [key: string]: DecoratorDescription;
@@ -14,20 +19,18 @@ interface DecoratorInstances {
     [key: string]: vscode.TextEditorDecorationType;
 }
 
-// this method is called when vs code is activated
 export function activate(context: vscode.ExtensionContext) {
+    const namedColors: NamedColorsMap = {};
     const decoratorInstances: DecoratorInstances = {};
-    // Finds region[rgba(255,255,255,0.01)] ... endregion (spaces allowed around ",")
-    const regex = /[Rr]egion ?(\[ ?rgba\(\d{1,3} ?, ?\d{1,3} ?, ?\d{1,3} ?, ?\d(?:\.\d{1,2})?\) ?\])([\s\S]*?)[Ee]nd ?[Rr]egion/g;
+    const regionRegex = /[Rr]egion ?\[( ?[\w\d., ()]+ ?)\]([\s\S]*?)[Ee]nd ?[Rr]egion/g;
+    const colorRegex = /rgba\(\d{1,3},\d{1,3},\d{1,3},\d(?:\.\d{1,2})?\)/g;
 
-    vscode.window.visibleTextEditors.map((editor) => {
-        colorRegions(editor);
-    });
+    //#region [Subscriptions]
 
     vscode.window.onDidChangeActiveTextEditor(
         (editor) => {
             if (editor !== undefined) {
-                colorRegions(editor);
+                onColorRegions(editor);
             }
         },
         null,
@@ -38,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
         (event) => {
             vscode.window.visibleTextEditors.map((editor) => {
                 if (editor.document === event.document) {
-                    colorRegions(editor);
+                    onColorRegions(editor);
                 }
             });
         },
@@ -46,45 +49,26 @@ export function activate(context: vscode.ExtensionContext) {
         context.subscriptions
     );
 
-    /*
-    vscode.workspace.onDidOpenTextDocument(
+    vscode.workspace.onDidChangeConfiguration(
         (event) => {
-            // Schedule a new event so that the editor gets pushed
-            // onto visibleTextEditors array
-            setTimeout(() => {
-                console.log('open');
-                vscode.window.visibleTextEditors.map((editor) => {
-                    if (editor.document === event) {
-                        colorRegions(editor);
-                    }
-                });
-            }, 0);
-        },
-        null,
+            if (event.affectsConfiguration('coloredRegions')) {
+                onRefreshConfiguration();
+            }
+        }, null,
         context.subscriptions
     );
-    */
 
-    function createDecoratorInstance(color: string) {
-        if (decoratorInstances[color] !== undefined) {
-            return decoratorInstances[color];
-        }
+    //#endregion
 
-        const instance = vscode.window.createTextEditorDecorationType({
-            isWholeLine: true,
-            backgroundColor: color
-        });
+    //#region [Main]
 
-        decoratorInstances[color] = instance;
-        return instance;
-    }
+    readConfiguration();
 
-    function parseColor(inputColor: string) {
-        const cleaned = inputColor.replace(/ /g, '');
-        return cleaned.substring(1, cleaned.length - 1);
-    }
+    //#endregion
 
-    function colorRegions(activeEditor: vscode.TextEditor) {
+    //#region [Events]
+
+    function onColorRegions(activeEditor: vscode.TextEditor) {
         {
             // Clear decorations
             const keys = Object.keys(decoratorInstances);
@@ -93,11 +77,20 @@ export function activate(context: vscode.ExtensionContext) {
             }
         }
 
+        const namedColorsKeys = Object.keys(namedColors);
         const text = activeEditor.document.getText();
         const decoratorMap: DecoratorMap = {};
         let match;
-        while ((match = regex.exec(text))) {
-            const color = parseColor(match[1]);
+        while ((match = regionRegex.exec(text))) {
+            let color = parseColor(match[1]);
+
+            // Color can be a name or a rgba value
+            if (namedColorsKeys.indexOf(color) !== -1) {
+                color = namedColors[color];
+            } else if (color.match(colorRegex) === null) {
+                continue;
+            }
+
             const decorator = createDecoratorInstance(color);
             const startPos = activeEditor.document.positionAt(match.index);
             const endPos = activeEditor.document.positionAt(
@@ -133,4 +126,80 @@ export function activate(context: vscode.ExtensionContext) {
             }
         }
     }
+
+    function onRefreshConfiguration() {
+        const configuration = getConfiguration();
+        Object.assign(namedColors, configuration);
+    }
+
+    //#endregion
+
+    //#region [Helpers]
+
+    async function readConfiguration() {
+        const configuration = getConfiguration();
+        const packageJsonConfiguration = await getPackageConfiguration();
+
+        Object.assign(namedColors, configuration, packageJsonConfiguration);
+
+        vscode.window.visibleTextEditors.map((editor) => {
+            onColorRegions(editor);
+        });
+    }
+
+    function getConfiguration() {
+        const configuration = vscode.workspace.getConfiguration('coloredRegions');
+        if (configuration && configuration.namedColors) {
+            return configuration.namedColors;
+        }
+
+        return {};
+    }
+
+    async function getPackageConfiguration() {
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+
+        if (workspaceFolders === undefined) {
+            return {};
+        }
+
+        const workspacePath = workspaceFolders[0].uri.fsPath;
+
+        try {
+            const fullPath = path.join(workspacePath, 'package.json');
+            const document = await vscode.workspace.openTextDocument(fullPath);
+            const text = document.getText();
+            const json = JSON.parse(text);
+
+            if (json.coloredRegions !== undefined) {
+                return json.coloredRegions.namedColors;
+            }
+
+        } catch (error) {
+            // Fail silently
+        }
+
+        return {};
+    }
+
+    function createDecoratorInstance(color: string) {
+        if (decoratorInstances[color] !== undefined) {
+            return decoratorInstances[color];
+        }
+
+        const instance = vscode.window.createTextEditorDecorationType({
+            isWholeLine: true,
+            backgroundColor: color
+        });
+
+        decoratorInstances[color] = instance;
+        return instance;
+    }
+
+    function parseColor(inputColor: string) {
+        const cleaned = '' + inputColor.replace(/ /g, '');
+        return cleaned;
+    }
+
+    //#endregion
 }
