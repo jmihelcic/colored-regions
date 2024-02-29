@@ -18,12 +18,6 @@
     "color"
   ],
   "contributes": {
-    "commands": [
-      {
-        "command": "better-colored-regions.helloWorld",
-        "title": "Hello World"
-      }
-    ],
     "configuration": {
       "title": "Colored Regions",
       "properties": {
