@@ -45,17 +45,17 @@ Settings will be read from (listed by priority):
 ## Release Notes
 
 ### 0.0.4
-* Code refactor and performance optimization.
+* Code refactoring and performance optimization.
 
-* No glitchy backgrounds while typing inside the region, only the meaningful changed are sent to the editor.
+* No glitchy backgrounds while typing inside the region, only the meaningful changes are sent to the editor.
 
-* Nested regions support.
+* Added support for nested regions.
 
-* Lua `--region` and `--[[ region ]]` support.
+* Added support for Lua `--region` and `--[[ region ]]` comments.
 
-* Regions without explicit color and name are supported: the values are taken from the `coloredRegions.colorRange` array.
+* Added support for regions without explicit color and name: the values are taken from the `coloredRegions.colorRange` array.
 
-* Colors in `#region[#ddd]` and `#region[#dddddd50]` format are supported.
+* Added support for colors in `#region[#ddd]` and `#region[#dddddd50]` formats.
 
 * If no last `#end region` is set, the last region extends to the end of the file.
 
