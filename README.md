@@ -18,6 +18,8 @@ ext install colored-regions
 
 Customize your regions by providing a `rgba(r, g, b, a)` color, or create a custom `named color` in **user settings** or **package.json** (workspace) and use it.
 
+Define `coloredRegions.colorRange` array and use `#region` without explicit color definition.
+
 ![features](images/features.png)
 
 ## Settings
@@ -38,10 +40,24 @@ Settings will be read from (listed by priority):
 
 ## Roadmap
 
-1. <s>Settings</s> -  done!
-2. Support for nested regions
+1. Minimap support
 
 ## Release Notes
+
+### 0.0.4
+* Code refactor and performance optimization.
+
+* No glitchy backgrounds while typing inside the region, only the meaningful changed are sent to the editor.
+
+* Nested regions support.
+
+* Lua `--region` and `--[[ region ]]` support.
+
+* Regions without explicit color and name are supported: the values are taken from the `coloredRegions.colorRange` array.
+
+* Colors in `#region[#ddd]` and `#region[#dddddd50]` format are supported.
+
+* If no last `#end region` is set, the last region extends to the end of the file.
 
 ### 0.0.3
 
@@ -49,7 +65,7 @@ Settings will be read from (listed by priority):
 
 ![named colors](images/named_colors.png)
 
-* Named colors defined in **package.json** (workspace) 
+* Named colors defined in **package.json** (workspace)
 
 ![package settings](images/package_settings.png)
 
