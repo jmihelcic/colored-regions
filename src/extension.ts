@@ -2,14 +2,13 @@ import * as vscode from 'vscode'
 import { getConfiguration, extensionConfigurationKey } from './configuration'
 import ColoredRegions, { DecoratorMap } from './ColoredRegions'
 
-export const activate = async (context: vscode.ExtensionContext) => {
+export const activate = (context: vscode.ExtensionContext) => {
   const coloredRegions = new ColoredRegions()
-  let configuration = await getConfiguration()
-  coloredRegions.setConfiguration(configuration)
   let decoratorMap: DecoratorMap = {}
 
   const updateColoredRegions = (editor: vscode.TextEditor) => {
     const newDecoratorMap = coloredRegions.getDecoratorMap(editor.document.getText())
+
     Object.entries(decoratorMap).forEach(([color, { decorator }]) => {
       if (!newDecoratorMap[color]) {
         editor.setDecorations(decorator, [])
@@ -23,17 +22,23 @@ export const activate = async (context: vscode.ExtensionContext) => {
     decoratorMap = newDecoratorMap
   }
 
-  vscode.workspace.onDidChangeConfiguration(async (event) => {
+  const readConfiguration = async () => {
+    const configuration = await getConfiguration()
+    coloredRegions.setConfiguration(configuration)
+    vscode.window.visibleTextEditors.map((editor) => {
+      updateColoredRegions(editor)
+    })
+  }
+
+  vscode.workspace.onDidChangeConfiguration((event) => {
+    vscode.window.showInformationMessage('onDidChangeConfiguration')
     if (event.affectsConfiguration(extensionConfigurationKey)) {
-      configuration = await getConfiguration()
-      coloredRegions.setConfiguration(configuration)
-      vscode.window.visibleTextEditors.forEach((editor) => {
-        updateColoredRegions(editor)
-      })
+      readConfiguration()
     }
   }, null, context.subscriptions)
 
   vscode.window.onDidChangeActiveTextEditor((editor) => {
+    vscode.window.showInformationMessage('onDidChangeActiveTextEditor')
     if (editor) {
       updateColoredRegions(editor)
     }
@@ -47,7 +52,5 @@ export const activate = async (context: vscode.ExtensionContext) => {
     })
   }, null, context.subscriptions)
 
-  vscode.window.visibleTextEditors.map((editor) => {
-    updateColoredRegions(editor)
-  })
+  readConfiguration()
 }
