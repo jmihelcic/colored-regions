@@ -16,8 +16,8 @@ export default class ColoredRegions {
   private decoratorInstances: DecoratorInstances = {}
   private startRegionRegex = /(#|\/\/|--|\[\[|pragma)\s*region(\s|\[|$)/i
   private startRegionOptionsRegex = /(#|\/\/|--|\[\[|pragma)\s*region\s*\[(\s*[#\w\d\s.,()]*)\]/i
-  private endRegionRegex = /((#|\/\/|--|pragma)\s*end\s*region|end\s*region\s*\]\])/i
-  private colorRegex = /(rgba?\(\d{1,3},\d{1,3},\d{1,3},\d(?:\.\d+)?\)|rgb?\(\d{1,3},\d{1,3},\d{1,3}\)|#[0-9a-f]{3,8})/i
+  private endRegionRegex = /((#|\/\/|--|pragma)\s*(end\s*region|region\s*end)|(end\s*region|region\s*end)\s*\]\])/i
+  private colorRegex = /(rgba?\(\d{1,3},\d{1,3},\d{1,3},\d(?:\.\d+)?\)|rgba?\(\d{1,3},\d{1,3},\d{1,3}\)|#[0-9a-f]{3,8})/i
   private namedColors: Record<string, string> = {}
   private namedColorsLoose: Record<string, string> = {}
   private colorRange: string[] = []

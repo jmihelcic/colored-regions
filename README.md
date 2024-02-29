@@ -34,6 +34,10 @@ Settings will be read from (listed by priority):
 
 ![user settings](images/user_settings.png)
 
+3) default settings
+
+By default the `colorRange` has 6 elements, the colors taken from material palette with 0.12 opacity
+
 ## Example
 
 ![regions example](images/regions.png)
@@ -55,7 +59,7 @@ Settings will be read from (listed by priority):
 
 * Added support for regions without explicit color and name: the values are taken from the `coloredRegions.colorRange` array.
 
-* Added support for colors in `#region[#ddd]` and `#region[#dddddd50]` formats.
+* Added support for HEX colors in `#region[#123]`, `#region[#123456]` and `#region[#12345678]` formats.
 
 * If no last `#end region` is set, the last region extends to the end of the file.
 

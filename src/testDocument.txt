@@ -2,24 +2,9 @@
 // Don't match the regex
 // ==================================================================
 
-//#region Test
+//#region []
+If [] brackets are found, a color value or color name is expected inside
 //#endregion
-
-//#region[] Test
-//#endregion
-
-//#region[string] Test
-//#endregion
-
-//#region[123] Test
-//#endregion
-
-//#region[rgb(128,128,128)] Test
-//#endregion
-
-//#region[rgba(128,128,128)] Test 
-//#endregion
-
 
 // ==================================================================
 // VSCode supported regions
@@ -38,7 +23,7 @@
 #endregion
 
 #pragma region [rgba(155,89,182,0.15)]
-    C/C++ 
+    C/C++
 #pragma endregion
 
 //#region [rgba(52,73,94,0.15)]
@@ -53,16 +38,24 @@
     VB
 #End Region
 
+--region [rgb(45,0,180,0.1)]
+    Lua
+--endregion
+
+--[[region [rgb(200,90,0,0.1)]
+    Lua Multiline
+end region ]]--
+
 
 // ==================================================================
 // Mix and Match regions - Allowed by regex
 // ==================================================================
 
 #pragma region [rgba(46,204,113,0.15)]
-#EndRegion
+#End Region
 
 //#region [rgba(52,152,219,0.15)]
-#endregion
+#end rEgion
 
 #Region [rgba(155,89,182,0.15)]
 #pragma endregion
@@ -70,20 +63,21 @@
 
 // ==================================================================
 // VSCode supported named color regions + variations
-// Note: Spaces are removed during comparison
+// For a color name exact match takes priority
+// If not found, a lowercased name without spaces is used
 // ==================================================================
 
-//#region [MyFavoriteColor]
+//#region [main]
+    Exact match by `main` color name
 //#endregion
 
-//#region [ MyFavoriteColor ]
+//#region [MA IN]
+    Exact match not found, the name is converted into `main`
 //#endregion
 
-//#region [ My Favorite Color]
-//#endregion
-
-//#region [ My    Favorite    Color ]
-//#endregion
+//   #   region     [    MA IN   ]
+    Any amount of spaces between keywords is allowed
+//   #   end    region
 
 
 // ==================================================================
@@ -110,3 +104,79 @@
 
 //#region[  rgba(100,  70  ,255,  0 .   15)  ] Colored Region
 //#endregion
+
+
+// ==================================================================
+// HEX colors are supported
+// ==================================================================
+
+//#region[ #f9a ] Colored Region
+//#endregion
+
+//#region[ #f9aede ] Colored Region
+//#endregion
+
+//#region[ #f9aede55 ] Hex color with opacity
+//#endregion
+
+
+// ==================================================================
+// Regions without explicit color defined
+// The color by iterating `coloredRegions.colorRange` array
+// ==================================================================
+
+#region should be colored with coloredRegions.colorRange[0]
+#endregion
+
+--region should be colored with coloredRegions.colorRange[1]
+//endregion
+
+#pragma region should be colored with coloredRegions.colorRange[2]
+#pragma end region
+
+#region should be colored with coloredRegions.colorRange[3]
+#end region
+
+#region should be colored with coloredRegions.colorRange[4]
+#end region
+
+#region should be colored with coloredRegions.colorRange[5]
+#end region
+
+#region should be colored with coloredRegions.colorRange[0] because there're only 6 elements in the default coloredRegions.colorRange config
+#end region
+
+
+// ==================================================================
+// Nested regions
+// ==================================================================
+
+//#region [ #aae ] Root-level region
+
+// #region [ #95001311 ] Semi-transparent sub region
+// #end region
+
+//#end region
+
+//region
+//region
+//region
+//region
+//endregion
+//end region
+//regionend
+//region end
+
+
+// ==================================================================
+// Not-closed region continues up to the end of the file
+// ==================================================================
+
+# region [ #cde ]
+TEST
+
+# region sub region
+# region end
+
+TEST
+TEST
