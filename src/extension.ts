@@ -31,14 +31,12 @@ export const activate = (context: vscode.ExtensionContext) => {
   }
 
   vscode.workspace.onDidChangeConfiguration((event) => {
-    vscode.window.showInformationMessage('onDidChangeConfiguration')
     if (event.affectsConfiguration(extensionConfigurationKey)) {
       readConfiguration()
     }
   }, null, context.subscriptions)
 
   vscode.window.onDidChangeActiveTextEditor((editor) => {
-    vscode.window.showInformationMessage('onDidChangeActiveTextEditor')
     if (editor) {
       updateColoredRegions(editor)
     }
