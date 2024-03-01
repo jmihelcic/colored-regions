@@ -49,6 +49,7 @@ By default the `colorRange` has 6 elements, the colors taken from material palet
 ## Release Notes
 
 ### 0.0.4
+
 * Code refactoring and performance optimization.
 
 * No glitchy backgrounds while typing inside the region, only the meaningful changes are sent to the editor.
@@ -57,11 +58,24 @@ By default the `colorRange` has 6 elements, the colors taken from material palet
 
 * Added support for Lua `--region` and `--[[ region ]]` comments.
 
-* Added support for regions without explicit color and name: the values are taken from the `coloredRegions.colorRange` array.
+* Added support for `/* region ` and ` end region */` multi-line JavaScript/TypeScript/C# comments.
+
+* Added support for `''' region` Python multi-line comments.
 
 * Added support for HEX colors in `#region[#123]`, `#region[#123456]` and `#region[#12345678]` formats.
 
+* Added support for flexible color declarations: `#region Sample Comment [#ddd]` is supported.
+
+* Added support for regions without a color declaration: the values are taken from the `coloredRegions.colorRange` array.
+
+* If the color param is not defined or is invalid, region color fallbacks to the next value from `coloredRegions.colorRange` array.
+
 * If no last `#end region` is set, the last region extends to the end of the file.
+
+* Added support for multiple editor windows/split view/the same document in different windows.
+
+* Multiple color declarations are supported: the first valid is taken: `#region [main] [#ddd]` sets color to the `main` if the last is defined. Otherwise it fallbacks to `[#ddd]`.
+
 
 ### 0.0.3
 
