@@ -54,6 +54,9 @@ end region ]]--
     Python Multiline
     Region End '''
 
+<!-- region rgb(0, 0, 255, 0.2) -->
+    HTML
+<!-- region end -->
 
 // ==================================================================
 // Various placement of color param is supported
