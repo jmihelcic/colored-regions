@@ -5,7 +5,6 @@ export const extensionConfigurationKey = 'coloredRegions'
 
 export type ExtensionConfiguration = {
   namedColors?: Record<string, string>
-  namedColorsLoose?: Record<string, string>
   colorRange?: string[]
 }
 
@@ -20,9 +19,13 @@ export const getConfiguration = async () => {
     out.colorRange = override.colorRange
   }
   if (out.namedColors) {
-    out.namedColorsLoose = Object.entries(out.namedColors).reduce((out: Record<string, string>, [key, value]) => {
-      out[key.replace(/\s/g, '').toLowerCase()] = value
-      return out
+    Object.entries(out.namedColors).forEach(([key, value]) => {
+      const differentKeys = [key.trim(), key.replace(/\s/g, ''), key.toLowerCase(), key.trim().toLowerCase(), key.replace(/\s/g, '').toLowerCase()]
+      differentKeys.forEach((key) => {
+        if (!out.namedColors![key]) {
+          out.namedColors![key] = value
+        }
+      })
     }, {})
   }
   return out

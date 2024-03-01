@@ -1,22 +1,22 @@
 // ==================================================================
-// Don't match the regex
-// ==================================================================
-
-//#region []
-If [] brackets are found, a color value or color name is expected inside
-//#endregion
-
-// ==================================================================
 // VSCode supported regions
 // ==================================================================
 
-//#region [rgba(26,188,156,0.15)]
+//#region [rgba(26,188,156,0.20)]
     TypeScript/JavaScript
 //#endregion
 
 //region [rgba(46,204,113,0.15)]
     TypeScript/JavaScript
 //endregion
+
+/* region [rgb(50, 80, 220, 0.15)]
+    TypeScript/JavaScript/C# Multiline
+  end region */
+
+# Region [rgba(100, 200, 50, 0.2)]
+    Python
+# End Region
 
 #region [rgba(52,152,219,0.15)]
     C#
@@ -46,6 +46,34 @@ If [] brackets are found, a color value or color name is expected inside
     Lua Multiline
 end region ]]--
 
+# Region [rgba(100, 200, 50, 0.2)]
+    Python
+# End Region
+
+''' Region [rgb(200, 200, 200, 0.3)]
+    Python Multiline
+    Region End '''
+
+
+// ==================================================================
+// Various placement of color param is supported
+// Note: if param is specified several times, the first valid occurence is taken
+// ==================================================================
+
+# REGION text is allowed before the color param [rgba(0,0,0,0.1)]
+# END REGION
+
+/* REGION is here: invalid color param: [], valid one: [#FF000020] (taken), further valid param is skipped: [#00FF0020]
+       If several color params are specified, the first valid takes priority
+       This region should be colored in red
+   END REGION */
+
+//# region color [ imports ] takes priority over [ main ]
+//# end region
+
+//# region color [ main ] takes priority over [ import ]
+//# end region
+
 
 // ==================================================================
 // Mix and Match regions - Allowed by regex
@@ -64,19 +92,25 @@ end region ]]--
 // ==================================================================
 // VSCode supported named color regions + variations
 // For a color name exact match takes priority
-// If not found, a lowercased name without spaces is used
+// If not found, it tries to find by trimmed, lowercased, no-spaces color name in different variations
 // ==================================================================
 
 //#region [main]
     Exact match by `main` color name
 //#endregion
 
-//#region [MA IN]
-    Exact match not found, the name is converted into `main`
+//#region [  MA IN  ]
+    Tries to find the color in the folowing order:
+        - `  MA IN  ` (original)
+        - `MA IN`     (trimmed)
+        - `MAIN`      (without spaces)
+        - `  ma in  ` (lowercased)
+        - `ma in`     (trimmed & lowercased)
+        - `main`      (without spaces & lowercased)
 //#endregion
 
 //   #   region     [    MA IN   ]
-    Any amount of spaces between keywords is allowed
+    Any amount of spaces between keywords and inside a keyword is allowed
 //   #   end    region
 
 
@@ -113,16 +147,21 @@ end region ]]--
 //#region[ #f9a ] Colored Region
 //#endregion
 
-//#region[ #f9aede ] Colored Region
+//#region[ # f9 ae de ] Colored Region
 //#endregion
 
 //#region[ #f9aede55 ] Hex color with opacity
 //#endregion
 
+//#region[ #f9a3434t3434343434ede(55 ]
+    The valid value of #f9aede is extracted from the color param
+//#endregion
+
 
 // ==================================================================
-// Regions without explicit color defined
-// The color by iterating `coloredRegions.colorRange` array
+// Regions without explicit color supported
+// The color is taken by iterating over `coloredRegions.colorRange` array
+// By default, `colorRange` array consists on 6 colors taken from material palette with 0.12 opacity
 // ==================================================================
 
 #region should be colored with coloredRegions.colorRange[0]
@@ -151,7 +190,7 @@ end region ]]--
 // Nested regions
 // ==================================================================
 
-//#region [ #aae ] Root-level region
+//#region [ #aaeadd99 ] Root-level region
 
 // #region [ #95001311 ] Semi-transparent sub region
 // #end region
@@ -162,6 +201,7 @@ end region ]]--
 //region
 //region
 //region
+    Unnamed regions can be nested as well
 //endregion
 //end region
 //regionend

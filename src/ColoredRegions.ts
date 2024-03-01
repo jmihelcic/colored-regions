@@ -14,12 +14,12 @@ export type DecoratorMap = Record<string, DecoratorDescription>
 
 export default class ColoredRegions {
   private decoratorInstances: DecoratorInstances = {}
-  private startRegionRegex = /(#|\/\/|--|\[\[|pragma)\s*region(\s|\[|$)/i
-  private startRegionOptionsRegex = /(#|\/\/|--|\[\[|pragma)\s*region\s*\[(\s*[#\w\d\s.,()]*)\]/i
-  private endRegionRegex = /((#|\/\/|--|pragma)\s*(end\s*region|region\s*end)|(end\s*region|region\s*end)\s*\]\])/i
-  private colorRegex = /(rgba?\(\d{1,3},\d{1,3},\d{1,3},\d(?:\.\d+)?\)|rgba?\(\d{1,3},\d{1,3},\d{1,3}\)|#[0-9a-f]{3,8})/i
+  private startRegionRegex = /^(#|\/\/|--|\[\[|'''|\/\*|pragma|\s)+region(\s|\[|$)/i
+  private regionOptionsRegex = /\[(\s*[#\w\d\s.,()]*)\]/ig
+  private endRegionRegex = /((#|\/\/|--|'''|\/\*|pragma)\s*(end\s*region|region\s*end)|(end\s*region|region\s*end)\s*(\]\]|'''|\*\/))/i
+  private colorRgbRegex = /(rgba?\(\d{1,3},\d{1,3},\d{1,3},\d(?:\.\d+)?\)|rgba?\(\d{1,3},\d{1,3},\d{1,3}\))/i
+  private colorHexRegex = /(#[0-9a-f]{3,8})/i
   private namedColors: Record<string, string> = {}
-  private namedColorsLoose: Record<string, string> = {}
   private colorRange: string[] = []
 
   private getDecoratorInstance = (color: string) => {
@@ -36,7 +36,6 @@ export default class ColoredRegions {
 
   setConfiguration = (configuration: ExtensionConfiguration) => {
     this.namedColors = configuration.namedColors || {}
-    this.namedColorsLoose = configuration.namedColorsLoose || {}
     this.colorRange = configuration.colorRange || []
   }
 
@@ -72,12 +71,20 @@ export default class ColoredRegions {
           addRegion(current[current.length - 1].color, current[current.length - 1].start, rowIndex - 1)
         }
         let color = ''
-        const match = row.match(this.startRegionOptionsRegex)
-        if (match) {
-          const colorOrName = (match[2] || '').trim()
-          const colorOrNameLoose = colorOrName.replace(/\s/g, '').toLowerCase()
-          color = this.namedColors[colorOrName] || this.namedColorsLoose[colorOrNameLoose] || colorOrName
-        } else if (this.colorRange.length) {
+        let match: RegExpExecArray | null = null
+        this.regionOptionsRegex.lastIndex = 0
+        while ((match = this.regionOptionsRegex.exec(row)) !== null) {
+          const key = match[1] || ''
+          const differentKeys = [key, key.trim(), key.replace(/\s/g, ''), key.toLowerCase(), key.trim().toLowerCase(), key.replace(/\s/g, '').toLowerCase()]
+          const foundKey = differentKeys.find(key => !!this.namedColors[key])
+          let foundColor = foundKey ? this.namedColors[foundKey] : key
+          foundColor = foundColor.replace(/\s/g, '')
+          if (foundColor && (this.colorRgbRegex.test(foundColor) || this.colorHexRegex.test(foundColor))) {
+            color = foundColor
+            break
+          }
+        }
+        if (!color && this.colorRange.length) {
           color = this.colorRange[nextColorIndex]
           nextColorIndex++
           if (nextColorIndex >= this.colorRange.length) {
@@ -85,8 +92,24 @@ export default class ColoredRegions {
           }
         }
         color = color.replace(/\s/g, '')
-        if (color && this.colorRegex.test(color)) {
-          current.push({ color, start: rowIndex })
+        if (color) {
+          const colorRgbMatch = color.match(this.colorRgbRegex)
+          if (colorRgbMatch) {
+            current.push({ color: colorRgbMatch[1], start: rowIndex })
+          } else {
+            const colorHexMatch = color.match(this.colorHexRegex)
+            if (colorHexMatch) {
+              // only #123, #123456 and #12345678 matches are valid
+              let color = colorHexMatch[1]
+              if (color.length < 9) {
+                color = color.substring(0, 7)
+              }
+              if (color.length < 7) {
+                color = color.substring(0, 4)
+              }
+              current.push({ color, start: rowIndex })
+            }
+          }
         }
       }
     })

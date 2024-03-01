@@ -19,8 +19,19 @@ suite('Extension Test Suite', () => {
       #endregion
       #endregion
     `)
-    console.log(decoratorMap)
     assert.strictEqual(decoratorMap['#ddd'].regionsKey, '1-1;5-5;')
     assert.strictEqual(decoratorMap['#aaa'].regionsKey, '2-4;')
+  })
+
+  test('Hex color test', () => {
+    const decoratorMap = coloredRegions.getDecoratorMap(`
+      //#region[ #f9aede55 ] Hex color with opacity
+      //#endregion
+
+      //#region[ # f9 ae de ] Colored Region
+      //#endregion
+    `)
+    assert.strictEqual(decoratorMap['#f9aede55'].regionsKey, '1-2;')
+    assert.strictEqual(decoratorMap['#f9aede'].regionsKey, '4-5;')
   })
 })

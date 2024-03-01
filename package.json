@@ -29,13 +29,13 @@
             "imports": "#2563eb12",
             "main": "#e11d4812"
           },
-          "description": "You can define and use named colors instead of typing their rgba values",
+          "description": "You can define and use named colors instead of typing their rgb/rgba/hex values",
           "scope": "window"
         },
         "coloredRegions.colorRange": {
           "type": "array",
           "default": ["#65a30d12", "#0891b212", "#db277712", "#ca8a0412", "#dc262612", "#7c3aed12"],
-          "description": "You can omit color declaration - in this case #region will iterate through the colors in this array",
+          "description": "You can omit color declaration - in this case #region will take the next color from this array",
           "scope": "window"
         }
       }
