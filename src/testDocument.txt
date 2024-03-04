@@ -2,71 +2,83 @@
 // VSCode supported regions
 // ==================================================================
 
-//#region [rgba(26,188,156,0.20)]
+//#region [rgba(26,188,156,0.3)]
     TypeScript/JavaScript
 //#endregion
 
-//region [rgba(46,204,113,0.15)]
+//region [rgba(46,204,113,0.3)]
     TypeScript/JavaScript
 //endregion
 
-/* region [rgb(50, 80, 220, 0.15)]
+/* region [rgb(50, 80, 220, 0.3)]
     TypeScript/JavaScript/C# Multiline
   end region */
 
-# Region [rgba(100, 200, 50, 0.2)]
+# Region [rgba(100, 200, 50, 0.3)]
     Python
 # End Region
 
-#region [rgba(52,152,219,0.15)]
+#region [rgba(52,152,219,0.3)]
     C#
 #endregion
 
-#pragma region [rgba(155,89,182,0.15)]
+#pragma region [rgba(155,89,182,0.3)]
     C/C++
 #pragma endregion
 
-//#region [rgba(52,73,94,0.15)]
+//#region [rgba(02,73,194,0.3)]
     F#
 //#endregion
 
-#region [rgba(241,196,15,0.15)]
+#region [rgba(241,196,15,0.3)]
     Powershell
 #endregion
 
-#Region [rgba(231,76,60,0.15)]
+#Region [rgba(231,76,60,0.3)]
     VB
 #End Region
 
---region [rgb(45,0,180,0.1)]
+--region [rgb(145,0,250,0.3)]
     Lua
 --endregion
 
---[[region [rgb(200,90,0,0.1)]
+--[[region [rgb(200,90,0,0.3)]
     Lua Multiline
 end region ]]--
 
-# Region [rgba(100, 200, 50, 0.2)]
+# Region [rgba(100, 200, 50, 0.3)]
     Python
 # End Region
 
-''' Region [rgb(200, 200, 200, 0.3)]
+''' Region [rgb(200, 200, 0, 0.3)]
     Python Multiline
     Region End '''
 
-<!-- region rgb(0, 0, 255, 0.2) -->
+<!-- region [rgb(0, 0, 255, 0.3)] -->
     HTML
 <!-- region end -->
+
+ // #  region [rgba(26,188,156,0.20)]
+    TypeScript/JavaScript and other expressions allow any number of whitespaces
+ // #  endregion
+
+ region
+    Just a `region` word does not trigger region to start
+ endregion
+
+ pragma region
+    The same as `pragma region` without prepending `#` does not trigger region to start
+ endregion
 
 // ==================================================================
 // Various placement of color param is supported
 // Note: if param is specified several times, the first valid occurence is taken
 // ==================================================================
 
-# REGION text is allowed before the color param [rgba(0,0,0,0.1)]
+# REGION text is allowed before the color param [rgba(0,200,0,0.3)]
 # END REGION
 
-/* REGION is here: invalid color param: [], valid one: [#FF000020] (taken), further valid param is skipped: [#00FF0020]
+/* REGION is here: invalid color param: [], valid one: [#FF000030] (taken), further valid param is skipped: [#00FF0020]
        If several color params are specified, the first valid takes priority
        This region should be colored in red
    END REGION */
@@ -82,13 +94,13 @@ end region ]]--
 // Mix and Match regions - Allowed by regex
 // ==================================================================
 
-#pragma region [rgba(46,204,113,0.15)]
+#pragma region [rgba(46,204,113,0.3)]
 #End Region
 
-//#region [rgba(52,152,219,0.15)]
+//#region [rgba(52,152,219,0.3)]
 #end rEgion
 
-#Region [rgba(155,89,182,0.15)]
+#Region [rgba(155,89,182,0.3)]
 #pragma endregion
 
 
@@ -160,6 +172,9 @@ end region ]]--
     The valid value of #f9aede is extracted from the color param
 //#endregion
 
+//#region[  #  f9  13  43  30  ]
+    Spaces are ignored
+//#endregion
 
 // ==================================================================
 // Regions without explicit color supported
@@ -193,9 +208,13 @@ end region ]]--
 // Nested regions
 // ==================================================================
 
-//#region [ #aaeadd99 ] Root-level region
+# region [#0000de30] Semi-transparent region
+# end region
 
-// #region [ #95001311 ] Semi-transparent sub region
+//#region [ #aaee00 ] Solid color root-level region
+
+// #region [ #0000de30 ] Semi-transparent sub region
+    The color of sub-region does not sum up with the color of the parent region
 // #end region
 
 //#end region

@@ -14,7 +14,7 @@ export type DecoratorMap = Record<string, DecoratorDescription>
 
 export default class ColoredRegions {
   private decoratorInstances: DecoratorInstances = {}
-  private startRegionRegex = /^(#|\/\/|--|<!|\[\[|'''|\/\*|pragma|\s)+region(\s|\[|$)/i
+  private startRegionRegex = /^(#|\/\/|#\s*\/\/|\/\/\s*#|--|<!--|--\[\[|'''|\/\*|#pragma\s)\s*region(\s|\[|$)/i
   private regionOptionsRegex = /\[(\s*[#\w\d\s.,()]*)\]/ig
   private endRegionRegex = /((#|\/\/|--|'''|\/\*|pragma)\s*(end\s*region|region\s*end)|(end\s*region|region\s*end)\s*(\]\]|'''|\*\/))/i
   private colorRgbRegex = /(rgba?\(\d{1,3},\d{1,3},\d{1,3},\d(?:\.\d+)?\)|rgba?\(\d{1,3},\d{1,3},\d{1,3}\))/i
@@ -60,6 +60,7 @@ export default class ColoredRegions {
     let nextColorIndex = 0
     const current: { start: number; color: string }[] = []
     rows.forEach((row, rowIndex) => {
+      row = row.trim()
       if (current.length && this.endRegionRegex.test(row)) {
         addRegion(current[current.length - 1].color, current[current.length - 1].start, rowIndex)
         if (current.length > 1) {

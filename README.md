@@ -16,7 +16,7 @@ ext install colored-regions
 
 ## Features
 
-Customize your regions by providing a `rgba(r, g, b, a)` color, or create a custom `named color` in **user settings** or **package.json** (workspace) and use it.
+Customize your regions by providing a `rgba(r,g,b,a)`, `rgb(r,g,b)` or `#hex` color, or create a custom `named color` in **user settings** or **package.json** (workspace) and use it.
 
 Define `coloredRegions.colorRange` array and use `#region` without explicit color definition.
 
@@ -47,6 +47,12 @@ By default the `colorRange` has 6 elements, the colors taken from material palet
 1. Minimap support
 
 ## Release Notes
+
+### 0.0.5
+
+* Region start regex power decreased, just a `region` or `pragma region` word does not start the region.
+To start the region the line must start with one of `#`, `//#`, `#pragma` `//`, `--`, `--[[`, `'''`, or `<!--` expression followed with the `region` word.
+
 
 ### 0.0.4
 
