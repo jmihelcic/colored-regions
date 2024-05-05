@@ -58,6 +58,10 @@ end region ]]--
     HTML
 <!-- region end -->
 
+-- #region [rgb(0, 170, 50, 0.3)] -->
+    SQL: SELECT * FROM INFORMATION_SCHEMA.TABLES;
+-- #endregion
+
  // #  region [rgba(26,188,156,0.20)]
     TypeScript/JavaScript and other expressions allow any number of whitespaces
  // #  endregion

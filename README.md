@@ -48,6 +48,9 @@ By default the `colorRange` has 6 elements, the colors taken from material palet
 
 ## Release Notes
 
+### 0.0.6
+* Added SQL support: `-- #region` and `-- #endregion`.
+
 ### 0.0.5
 
 * Region start regex power decreased, just a `region` or `pragma region` word does not start the region.

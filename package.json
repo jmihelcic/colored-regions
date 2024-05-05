@@ -3,7 +3,7 @@
   "name": "colored-regions",
   "displayName": "Colored Regions",
   "description": "This package provides a simple way of colorizing regions.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publisher": "mihelcic",
   "engines": {
     "vscode": "^1.86.0"
