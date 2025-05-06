@@ -48,6 +48,9 @@ By default the `colorRange` has 6 elements, the colors taken from material palet
 
 ## Release Notes
 
+### 0.0.7
+  Added support for the following languages: Bat, Bat REM, CSS/Less/SCSS, Markdown, Latex, Autohotkey
+
 ### 0.0.6
 * Added SQL support: `-- #region` and `-- #endregion`.
 

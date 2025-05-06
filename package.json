@@ -3,7 +3,7 @@
   "name": "colored-regions",
   "displayName": "Colored Regions",
   "description": "This package provides a simple way of colorizing regions.",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "publisher": "mihelcic",
   "engines": {
     "vscode": "^1.86.0"
@@ -48,7 +48,9 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "vscode-test",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "package": "vsce package",
+    "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",

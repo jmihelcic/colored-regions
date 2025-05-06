@@ -66,6 +66,38 @@ end region ]]--
     TypeScript/JavaScript and other expressions allow any number of whitespaces
  // #  endregion
 
+::#region
+    Bat
+::#endregion
+
+REM #region
+    Bat REM
+REM #endregion
+
+/* #region [main] */
+.something {
+   /* CSS/Less/SCSS */
+}
+/* #endregion */
+
+/*#region*/
+.something {
+  /* CSS/Less/SCSS unnamed region */
+}
+/*#endregion*/
+
+<!-- #region -->
+    Markdown
+<!-- #endregion -->
+
+% region [rgb(200, 200, 0)]
+    Latex
+% endregion
+
+; #region Misc
+    Send "Autohotkey Hello World"
+; #endregion
+
  region
     Just a `region` word does not trigger region to start
  endregion
