@@ -14,7 +14,7 @@ export type DecoratorMap = Record<string, DecoratorDescription>
 
 export default class ColoredRegions {
   private decoratorInstances: DecoratorInstances = {}
-  private startRegionRegex = /^(#|\/\/|#\s*\/\/|\/\/\s*#|--|<!--|<!--\s*#|--\[\[|'''|\/\*|#pragma\s|--\s*#|\/\*\s*#|::\s*#?|REM\s*#?|%|;\s*#)\s*region(\s|\[|\*\/|$)/i
+  private startRegionRegex = /^(#|\s*\/\/|#\s*\/\/|\/\/\s*#|--|<!--|<!--\s*#|--\[\[|'''|\/\*|#pragma\s|--\s*#|\/\*\s*#|::\s*#?|REM\s*#?|%|;\s*#)\s*region(\s|\[|\*\/|$)/i
   private regionOptionsRegex = /\[(\s*[#\w\d\s.,()]*)\]/ig
   private endRegionRegex = /((#|\/\/|--|'''|\/\*|pragma|--\s*#|\/\*\s*#|<!--|<!--\s*#|::\s*#?|REM\s*#?|%|;\s*#)\s*(end\s*region|region\s*end)|(end\s*region|region\s*end)\s*(\]\]|'''|\*\/))/i
   private colorRgbRegex = /(rgba?\(\d{1,3},\d{1,3},\d{1,3},\d(?:\.\d+)?\)|rgba?\(\d{1,3},\d{1,3},\d{1,3}\))/i
